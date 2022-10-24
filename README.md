@@ -32,8 +32,10 @@ npm install
 npm start
 ```
 
-One more thing you need to do is to include the your won Azure account information in the ```environment.ts``` file.
+
+One more thing you need to do is to include your won Azure account information in the ```environment.ts``` file.
 ![azure-config](./src/Web/src/assets/imgs/azure-config.png)
+
 
 Otherwise you will see: Azure Storage is not configured UI
 ![azure-storage-not-config](./src/Web/src/assets/imgs/azure-storage-not-config.png)
