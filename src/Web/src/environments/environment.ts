@@ -3,7 +3,11 @@
 // The list of file replacements can be found in `angular.json`.
 
 export const environment = {
-  production: false
+  production: false,
+  azure_storageContainerName: 'uploadfiles',
+  azure_sasToken: 'sv=2021-06-08&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2022-10-30T17:36:42Z&st=2022-10-20T09:36:42Z&spr=https&sig=jS4WrjYwGeuLsch1yrceANHfoRzRSsjTFJMZp%2BXGlu0%3D',
+  azure_storageAccountName: 'azfileuploaddemo'
+
 };
 
 /*
