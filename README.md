@@ -9,7 +9,7 @@ The project is build with:
 - ngrx V14.3.2
 - @azure/storage-blob V12.12.0
 
-# Description
+## Description
 The user:
 - Select one file (image) from the file system
 - Upload the file to Azure Storage Blobs. If the file is large, uploading the big file in chunks and show one progress bar to indicate the uploading progress.
@@ -18,15 +18,15 @@ The user:
 Here is the demo:
 ![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage.gif)
 
-# Getting Started
+## Getting Started
 
-## Required Software
+### Required Software
 - Node V16.15.0
 - Angular V14.2.0
 - Azure Storage Account, [【refer from here】](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 - Azure Blob container, [【refer from here】](https://learn.microsoft.com/en-us/azure/storage/blobs/blob-containers-portal)
 
-## Setup/Installation
+### Setup/Installation
 ```js
 npm install
 npm start
