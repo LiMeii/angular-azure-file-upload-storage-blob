@@ -12,13 +12,19 @@ import { UploadBlobProgress } from '../models/upload-blob-progress.model';
 
 export class AzureFileStorageService {
 
-    private blobService =  new BlobServiceClient(`https://${environment.azure_storageAccountName}.blob.core.windows.net/?${environment.azure_sasToken}`);
+    private blobService!: BlobServiceClient;
+    private containerClient!: ContainerClient;
 
-    private containerClient: ContainerClient = this.blobService.getContainerClient(environment.azure_storageContainerName);
 
+    constructor(private ngZone: NgZone, private store: Store) {
 
-    constructor(private ngZone: NgZone, private store: Store) { }
+        if (environment.azure_storageAccountName && environment.azure_sasToken) {
+            
+            this.blobService = new BlobServiceClient(`https://${environment.azure_storageAccountName}.blob.core.windows.net/?${environment.azure_sasToken}`);
 
+            this.containerClient = this.blobService.getContainerClient(environment.azure_storageContainerName);
+        }
+    }
 
     public async getBlobsFromStorageContainer() {
         const returnedBlobUrls: string[] = [];
