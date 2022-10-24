@@ -21,7 +21,7 @@
         </div>
 
 
-        <div class="mt-5">
+        <div class="mt-4">
             <div class="d-flex flex-wrap">
                 <div role="button" class="card m-1" *ngFor="let item of blobsInContainer$ | async"
                     style="width: 18rem; height: 12rem;">
@@ -46,10 +46,8 @@
 
     </div>
 
-    <div *ngIf="!isStorageConfigured">
-        <h6>Azure Storage is not configured.</h6>
+    <div *ngIf="!isStorageConfigured" class="mt-3">
+        <h6 class="text-warning">Azure Storage is not configured.</h6>
     </div>
-
-
 
 </div>
