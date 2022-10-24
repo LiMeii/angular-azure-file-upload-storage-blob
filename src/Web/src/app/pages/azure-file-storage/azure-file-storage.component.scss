@@ -1,0 +1,11 @@
+.card-img-overlay-bg {
+    background-color: rgba(0, 0, 0, .55);
+}
+
+.card-img-delete {
+    display: none;
+}
+
+.card:hover .card-img-delete {
+    display: block;
+}
