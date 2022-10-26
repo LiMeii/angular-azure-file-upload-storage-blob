@@ -17,7 +17,7 @@ export class DeleteBlobEffects {
         this.actions$.pipe(
             ofType(deleteBlobAction.deleteBlob),
             switchMap((action) => {
-                return from(this.azureFileStorageService.deleteBlobIfItExists(action.fileName)).pipe(
+                return from(this.azureFileStorageService.deleteBlobIfItExists(action.blobName)).pipe(
                     map(() => getBlobsAction.getBlobsList()),
                     catchError(() => of(deleteBlobAction.deleteBlobFailed({ error: 'failed to delete blob' })))
                 );

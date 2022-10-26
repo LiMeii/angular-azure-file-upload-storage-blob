@@ -3,7 +3,7 @@ import { actionKey } from '../azure-file-storage.keys';
 
 const actionPrefix = `${actionKey}[API]`;
 
-export const deleteBlob = createAction(`${actionPrefix} Delete Blob`, props<{ fileName: string }>());
+export const deleteBlob = createAction(`${actionPrefix} Delete Blob`, props<{ blobName: string }>());
 
 export const deleteBlobSuccess = createAction(`${actionPrefix} Delete Blob Success`);
 
