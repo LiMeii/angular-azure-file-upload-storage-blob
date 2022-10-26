@@ -16,8 +16,12 @@ The user:
 - Delete the file from Azure Storage Blobs
 - Download file from Azure Storage Blobs. If the file is large, show one process bar to indicate the downloading process.
 
-Here is the demo for **get**, **upload**, **delete** blob file:
-![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage.gif)
+Here is the demo for **upload** blob file:
+![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage-upload.gif)
+
+
+Here is the demo for **delete** blob file:
+![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage-delete.gif)
 
 Here is the demo for **download** blob file:
 ![azure-fileupload-storage-download](./src/Web/src/assets/imgs/azure-fileupload-storage-download.gif)
