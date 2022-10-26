@@ -1,6 +1,6 @@
 # angular-azure-file-upload-storage-blob
 
-The purpose of this demo code is to practice and learn how to upload / get / delete blob files to Azure Storage Blobs with Angular.
+The purpose of this demo code is to practice and learn how to get / upload / download / delete blob files to Azure Storage Blobs with Angular.
 
 
 The project is build with:
@@ -14,11 +14,18 @@ The user:
 - Select one file (image) from the file system
 - Upload the file to Azure Storage Blobs. If the file is large, uploading the big file in chunks and show one progress bar to indicate the uploading progress.
 - Delete the file from Azure Storage Blobs
+- Download file from Azure Storage Blobs. If the file is large, show one process bar to indicate the downloading process.
 
-Here is the demo:
+Here is the demo for **get**, **upload**, **delete** blob file:
 ![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage.gif)
 
+
+Here is the demo for **download** blob file:
+![azure-fileupload-storage-download](./src/Web/src/assets/imgs/azure-fileupload-storage-download.gif)
+
+
 ## Getting Started
+
 
 ### Required Software
 - Node V16.15.0
