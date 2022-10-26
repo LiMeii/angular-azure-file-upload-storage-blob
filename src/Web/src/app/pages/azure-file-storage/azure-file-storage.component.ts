@@ -1,7 +1,7 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { blobsInContainer, uploadBlobProgress } from 'src/app/store/azure-file-storage/selectors/azure-file-storage.selector';
-import { getBlobsAction, uploadBlobAction, uploadBlobProgressAction, deleteBlobAction } from 'src/app/store/azure-file-storage/actions';
+import { getBlobsAction, uploadBlobAction, uploadBlobProgressAction, deleteBlobAction, downloadBlobAction } from 'src/app/store/azure-file-storage/actions';
 import { environment } from 'src/environments/environment';
 
 
@@ -82,9 +82,19 @@ export class AzureFileStorageComponent implements OnInit, AfterViewInit {
         const fileName = file.split('/').pop();
         if (fileName) {
             this.ngZone.run(() => {
-                this.store.dispatch(deleteBlobAction.deleteBlob({ fileName: fileName }))
+                this.store.dispatch(deleteBlobAction.deleteBlob({ blobName: fileName }))
             });
         }
+    }
+
+    public downloadBlobFile(file: string) {
+        const fileName = file.split('/').pop();
+        if (fileName) {
+            this.ngZone.run(() => {
+                this.store.dispatch(downloadBlobAction.downloadBlob({ blobName: fileName }))
+            });
+        }
+
     }
 
 

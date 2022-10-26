@@ -3,23 +3,23 @@ import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { catchError, switchMap, map } from 'rxjs/operators';
 import { from, of } from 'rxjs';
 
-import { deleteBlobAction, getBlobsAction } from '../actions';
+import { downloadBlobAction } from '../actions';
 import { AzureFileStorageService } from '../services/azure-file-storage.service';
 
 @Injectable()
-export class DeleteBlobEffects {
+export class DownloadBlobEffects {
     constructor(
         private actions$: Actions,
         private azureFileStorageService: AzureFileStorageService,
     ) { }
 
-    readonly deleteBlob$ = createEffect(() =>
+    readonly downloadBlob$ = createEffect(() =>
         this.actions$.pipe(
-            ofType(deleteBlobAction.deleteBlob),
+            ofType(downloadBlobAction.downloadBlob),
             switchMap((action) => {
-                return from(this.azureFileStorageService.deleteBlobIfItExists(action.blobName)).pipe(
-                    map(() => getBlobsAction.getBlobsList()),
-                    catchError(() => of(deleteBlobAction.deleteBlobFailed({ error: 'failed to delete blob' })))
+                return from(this.azureFileStorageService.downloadBlobToString(action.blobName)).pipe(
+                    map(() => downloadBlobAction.downloadBlobSuccess()),
+                    catchError(() => of(downloadBlobAction.downloadBlobFailed({ error: 'failed to download blob' })))
                 );
             }),
         ),

@@ -19,7 +19,7 @@ export class AzureFileStorageService {
     constructor(private ngZone: NgZone, private store: Store) {
 
         if (environment.azure_storageAccountName && environment.azure_sasToken) {
-            
+
             this.blobService = new BlobServiceClient(`https://${environment.azure_storageAccountName}.blob.core.windows.net/?${environment.azure_sasToken}`);
 
             this.containerClient = this.blobService.getContainerClient(environment.azure_storageContainerName);
@@ -73,6 +73,23 @@ export class AzureFileStorageService {
 
     }
 
+
+    public async downloadBlobToString(blobName: string) {
+        const blobClient = await this.containerClient.getBlobClient(blobName);
+        const downloadResponse = await blobClient.download();
+
+        if (downloadResponse?.blobBody) {
+            downloadResponse?.blobBody.then(blob => {
+                let objectURL = URL.createObjectURL(blob);
+                var anchor = document.createElement("a");
+                anchor.download = blobName;
+                anchor.href = objectURL;
+                anchor.click();
+                anchor.remove();
+            });
+        }
+
+    }
 
     public onUploadProgress(progress: UploadBlobProgress, fileSize: number) {
         const percentage = Math.round(progress.loadedBytes / fileSize * 100);
