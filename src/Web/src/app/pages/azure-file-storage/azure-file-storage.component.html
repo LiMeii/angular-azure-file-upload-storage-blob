@@ -9,10 +9,10 @@
 
             <input class="d-none" type="file" #fileInput (change)="onFileSelected($event)" accept="*" />
 
-            <div class="mt-3 w-75" [style.visibility]="showUploadProgress? 'visible' : 'hidden'">
-                <small class="text-info">uploading...</small>
+            <div class="mt-3 w-75" [style.visibility]="showTransferProgress? 'visible' : 'hidden'">
+                <small class="text-info">processing...</small>
                 <div class="progress w-50" style="height: 12px;">
-                    <div id="uploadProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info"
+                    <div id="processProgressBar" class="progress-bar progress-bar-striped progress-bar-animated bg-info"
                         role="progressbar" aria-label="Success example" style="width: 0%" aria-valuenow="0"
                         aria-valuemin="0" aria-valuemax="100">
                     </div>
@@ -25,12 +25,12 @@
             <div class="d-flex flex-wrap">
                 <div role="button" class="card m-1" *ngFor="let item of blobsInContainer$ | async"
                     style="width: 18rem; height: 12rem;">
-                    <img src="{{item}}" class="card-img-top" alt="{{item}}" class="w-100 h-100"  onerror="this.src='../../../assets/imgs/default-placeholder.png';">
+                    <img src="{{item.blobUrls}}" class="card-img-top" alt="{{item.blobUrls}}" class="w-100 h-100"  onerror="this.src='../../../assets/imgs/default-placeholder.png';">
 
                     <div class="card-img-overlay card-img-overlay-bg card-img-delete">
                         <div class="d-flex flex-row-reverse">
 
-                            <div role="button" (click)="deleteBlobFile(item)">
+                            <div role="button" (click)="deleteBlobFile(item.blobUrls)">
                                 <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="#fff"
                                     class="bi bi-trash" viewBox="0 0 16 16">
                                     <path

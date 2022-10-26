@@ -6,4 +6,4 @@ const featureStateSelector = createFeatureSelector<AzureFileStorageState>(featur
 
 export const blobsInContainer = createSelector(featureStateSelector, (fs) => fs.blobsInContainer);
 
-export const uploadBlobProgress = createSelector(featureStateSelector, (fs) => fs.uploadBlobProgress);
+export const transferBlobProgress = createSelector(featureStateSelector, (fs) => fs.transferBlobProgressVal);

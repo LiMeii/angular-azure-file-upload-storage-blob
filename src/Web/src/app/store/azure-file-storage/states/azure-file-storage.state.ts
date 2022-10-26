@@ -1,11 +1,12 @@
+import { BlobsInContainer } from "../models/azure-file-storage.model";
 
 
 export interface AzureFileStorageState {
-    blobsInContainer: string[];
-    uploadBlobProgress: number;
+    blobsInContainer: BlobsInContainer[];
+    transferBlobProgressVal: number;
 }
 
 export const initialState: AzureFileStorageState = {
     blobsInContainer: [],
-    uploadBlobProgress: 0
+    transferBlobProgressVal: 0
 }

@@ -1,8 +1,9 @@
 import { AfterViewInit, Component, ElementRef, NgZone, OnInit, ViewChild } from '@angular/core';
 import { Store } from '@ngrx/store';
-import { blobsInContainer, uploadBlobProgress } from 'src/app/store/azure-file-storage/selectors/azure-file-storage.selector';
-import { getBlobsAction, uploadBlobAction, uploadBlobProgressAction, deleteBlobAction, downloadBlobAction } from 'src/app/store/azure-file-storage/actions';
+import { blobsInContainer, transferBlobProgress } from 'src/app/store/azure-file-storage/selectors/azure-file-storage.selector';
+import { getBlobsAction, uploadBlobAction, transferBlobProgressAction, deleteBlobAction, downloadBlobAction } from 'src/app/store/azure-file-storage/actions';
 import { environment } from 'src/environments/environment';
+import { BlobsInContainer } from 'src/app/store/azure-file-storage/models/azure-file-storage.model';
 
 
 @Component({
@@ -14,10 +15,10 @@ export class AzureFileStorageComponent implements OnInit, AfterViewInit {
     @ViewChild('fileInput', { static: false }) fileInput!: ElementRef<HTMLInputElement>;
     file: File = {} as File;
     isStorageConfigured: boolean = true;
-    showUploadProgress: boolean = false;
+    showTransferProgress: boolean = false;
 
     public blobsInContainer$ = this.store.select(blobsInContainer);
-    public uploadBlobProgress$ = this.store.select(uploadBlobProgress)
+    public transferBlobProgress$ = this.store.select(transferBlobProgress)
 
 
     constructor(private store: Store, private ngZone: NgZone) { }
@@ -34,9 +35,9 @@ export class AzureFileStorageComponent implements OnInit, AfterViewInit {
     }
 
     ngAfterViewInit(): void {
-        this.uploadBlobProgress$.subscribe({
+        this.transferBlobProgress$.subscribe({
             next: (val: number) => {
-                this.displayUploadProgress(val)
+                this.displayTransferProgress(val)
             }
         });
     }
@@ -46,27 +47,27 @@ export class AzureFileStorageComponent implements OnInit, AfterViewInit {
     }
 
 
-    private displayUploadProgress(uploadProgressVal: number) {
-        if (uploadProgressVal > 0 && uploadProgressVal < 100) {
-            this.showUploadProgress = true
+    private displayTransferProgress(transferProgressVal: number) {
+        if (transferProgressVal > 0 && transferProgressVal < 100) {
+            this.showTransferProgress = true;
         } else {
             setTimeout(() => {
-                this.showUploadProgress = false
+                this.showTransferProgress = false;
+                this.ngZone.run(() => {
+                    this.store.dispatch(transferBlobProgressAction.transferBlobProgress({ transferBlobProgressVal: 0 }));
+                });
             }, 1000);
         }
 
-        const uploadProgressBarEle = document.getElementById('uploadProgressBar');
-        if (uploadProgressBarEle) {
-            uploadProgressBarEle.style.width = uploadProgressVal + '%';
-            uploadProgressBarEle.innerHTML = uploadProgressVal + '%';
+        const transferProgressBarEle = document.getElementById('processProgressBar');
+        if (transferProgressBarEle) {
+            transferProgressBarEle.style.width = transferProgressVal + '%';
+            transferProgressBarEle.innerHTML = transferProgressVal + '%';
         }
 
     }
 
     public showFileDialog(): void {
-        this.ngZone.run(() => {
-            this.store.dispatch(uploadBlobProgressAction.uploadBlobProgress({ uploadBlobProgressVal: 0 }));
-        });
         this.fileInput?.nativeElement?.click();
     }
 
@@ -87,11 +88,12 @@ export class AzureFileStorageComponent implements OnInit, AfterViewInit {
         }
     }
 
-    public downloadBlobFile(file: string) {
-        const fileName = file.split('/').pop();
+    public downloadBlobFile(blob: BlobsInContainer) {
+
+        const fileName = blob?.blobUrls?.split('/')?.pop();
         if (fileName) {
             this.ngZone.run(() => {
-                this.store.dispatch(downloadBlobAction.downloadBlob({ blobName: fileName }))
+                this.store.dispatch(downloadBlobAction.downloadBlob({ blobName: fileName, downloadFileByteSize: blob?.sizeInBytes }))
             });
         }
 

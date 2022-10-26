@@ -1,9 +1,9 @@
 import { Injectable, NgZone } from '@angular/core';
-import { BlobDeleteOptions, BlobServiceClient, ContainerClient } from '@azure/storage-blob';
+import { BlobDeleteOptions, BlobDownloadOptions, BlobServiceClient, BlockBlobParallelUploadOptions, ContainerClient } from '@azure/storage-blob';
 import { Store } from '@ngrx/store';
 import { environment } from 'src/environments/environment';
-import { uploadBlobProgressAction } from '../actions';
-import { UploadBlobProgress } from '../models/upload-blob-progress.model';
+import { transferBlobProgressAction } from '../actions';
+import { BlobsInContainer, TransferBlobProgress } from '../models/azure-file-storage.model';
 
 
 @Injectable({
@@ -27,11 +27,14 @@ export class AzureFileStorageService {
     }
 
     public async getBlobsFromStorageContainer() {
-        const returnedBlobUrls: string[] = [];
+        const returnedBlobs: BlobsInContainer[] = [];
         for await (const blob of this.containerClient.listBlobsFlat()) {
-            returnedBlobUrls.push(`https://${environment.azure_storageAccountName}.blob.core.windows.net/${environment.azure_storageContainerName}/${blob.name}`);
+            returnedBlobs.push({
+                blobUrls: `https://${environment.azure_storageAccountName}.blob.core.windows.net/${environment.azure_storageContainerName}/${blob.name}`,
+                sizeInBytes: blob?.properties?.contentLength ? blob?.properties?.contentLength : 0
+            })
         }
-        return returnedBlobUrls;
+        return returnedBlobs;
     }
 
     public async uploadFileToBlob(file: File | null) {
@@ -49,11 +52,11 @@ export class AzureFileStorageService {
         const bufferSize = file?.size > 1024 * 1024 * 32 ? 1024 * 1024 * 4 : 1024 * 512;
         const maxConcurrency = 8;
 
-        const options = {
+        const options: BlockBlobParallelUploadOptions = {
             blobHTTPHeaders: { blobContentType: file?.type },
             maxSingleShotSize: bufferSize,
             concurrency: maxConcurrency,
-            onProgress: (data: UploadBlobProgress) => this.onUploadProgress(data, uploadFileByteSize),
+            onProgress: (data: TransferBlobProgress) => this.onTransferBlobProgress(data, uploadFileByteSize),
         };
 
         await blockBlobClient.uploadData(file, options);
@@ -74,9 +77,14 @@ export class AzureFileStorageService {
     }
 
 
-    public async downloadBlobToString(blobName: string) {
+    public async downloadBlobToString(blobName: string, downloadFileByteSize: number) {
+
+        const options: BlobDownloadOptions = {
+            onProgress: (data: TransferBlobProgress) => this.onTransferBlobProgress(data, downloadFileByteSize)
+        }
+
         const blobClient = await this.containerClient.getBlobClient(blobName);
-        const downloadResponse = await blobClient.download();
+        const downloadResponse = await blobClient.download(0, 0, options);
 
         if (downloadResponse?.blobBody) {
             downloadResponse?.blobBody.then(blob => {
@@ -91,10 +99,10 @@ export class AzureFileStorageService {
 
     }
 
-    public onUploadProgress(progress: UploadBlobProgress, fileSize: number) {
+    public onTransferBlobProgress(progress: TransferBlobProgress, fileSize: number) {
         const percentage = Math.round(progress.loadedBytes / fileSize * 100);
         this.ngZone.run(() => {
-            this.store.dispatch(uploadBlobProgressAction.uploadBlobProgress({ uploadBlobProgressVal: percentage }));
+            this.store.dispatch(transferBlobProgressAction.transferBlobProgress({ transferBlobProgressVal: percentage }));
         });
 
     }
