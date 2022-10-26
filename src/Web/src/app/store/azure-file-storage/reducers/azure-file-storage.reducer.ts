@@ -2,9 +2,7 @@ import { Action, createReducer, on } from '@ngrx/store';
 import { initialState, AzureFileStorageState } from '../states';
 import {
     getBlobsAction,
-    uploadBlobAction,
-    uploadBlobProgressAction,
-    deleteBlobAction
+    transferBlobProgressAction,
 } from '../actions';
 
 const _reducer = createReducer<AzureFileStorageState>(
@@ -14,9 +12,9 @@ const _reducer = createReducer<AzureFileStorageState>(
     blobsInContainer: action.blobsInContainer
   })),
 
-  on(uploadBlobProgressAction.uploadBlobProgress, (state, action) => ({
+  on(transferBlobProgressAction.transferBlobProgress, (state, action) => ({
     ...state,
-    uploadBlobProgress: action.uploadBlobProgressVal
+    transferBlobProgressVal: action.transferBlobProgressVal
   })),
 
 

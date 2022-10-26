@@ -17,7 +17,7 @@ export class DownloadBlobEffects {
         this.actions$.pipe(
             ofType(downloadBlobAction.downloadBlob),
             switchMap((action) => {
-                return from(this.azureFileStorageService.downloadBlobToString(action.blobName)).pipe(
+                return from(this.azureFileStorageService.downloadBlobToString(action.blobName, action.downloadFileByteSize)).pipe(
                     map(() => downloadBlobAction.downloadBlobSuccess()),
                     catchError(() => of(downloadBlobAction.downloadBlobFailed({ error: 'failed to download blob' })))
                 );

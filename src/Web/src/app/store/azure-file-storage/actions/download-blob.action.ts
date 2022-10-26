@@ -3,7 +3,7 @@ import { actionKey } from '../azure-file-storage.keys';
 
 const actionPrefix = `${actionKey}[API]`;
 
-export const downloadBlob = createAction(`${actionPrefix} Download Blob`, props<{ blobName: string }>());
+export const downloadBlob = createAction(`${actionPrefix} Download Blob`, props<{ blobName: string, downloadFileByteSize: number }>());
 
 export const downloadBlobSuccess = createAction(`${actionPrefix} Download Blob Success`);
 
