@@ -9,7 +9,7 @@ The project is build with:
 - ngrx V14.3.2
 - @azure/storage-blob V12.12.0
 
-# Description
+## Description
 The user:
 - Select one file (image) from the file system
 - Upload the file to Azure Storage Blobs. If the file is large, uploading the big file in chunks and show one progress bar to indicate the uploading progress.
@@ -23,25 +23,30 @@ Here is the demo for **upload** blob file:
 Here is the demo for **delete** blob file:
 ![azure-fileupload-storage](./src/Web/src/assets/imgs/azure-fileupload-storage-delete.gif)
 
+
 Here is the demo for **download** blob file:
 ![azure-fileupload-storage-download](./src/Web/src/assets/imgs/azure-fileupload-storage-download.gif)
 
-# Getting Started
 
-## Required Software
+## Getting Started
+
+
+### Required Software
 - Node V16.15.0
 - Angular V14.2.0
 - Azure Storage Account, [【refer from here】](https://learn.microsoft.com/en-us/azure/storage/common/storage-account-create?tabs=azure-portal)
 - Azure Blob container, [【refer from here】](https://learn.microsoft.com/en-us/azure/storage/blobs/blob-containers-portal)
 
-## Setup/Installation
+### Setup/Installation
 ```js
 npm install
 npm start
 ```
 
-One more thing you need to do is to include the your won Azure account information in the ```environment.ts``` file.
+
+One more thing you need to do is to include your won Azure account information in the ```environment.ts``` file.
 ![azure-config](./src/Web/src/assets/imgs/azure-config.png)
+
 
 Otherwise you will see: Azure Storage is not configured UI
 ![azure-storage-not-config](./src/Web/src/assets/imgs/azure-storage-not-config.png)
